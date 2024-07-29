@@ -31,26 +31,28 @@ struct ListItemView: View {
         }
     }
 
-//        init(type: String = "All", sortOrder: [SortDescriptor<Item>]) {
-//            _items = Query(filter: #Predicate {
-//                if type == "All" {
-//                    return true
-//                } else {
-//                    return $0.type == type
-//                }
-//            }, sort: sortOrder)
-//        }
+        init(type: String = "All", sortOrder: [SortDescriptor<Item>]) {
+            _items = Query(filter: #Predicate {
+                if type == "All" {
+                    return true
+                } else {
+                    return $0.type == type
+                }
+            }, sort: sortOrder)
+        }
     
     func toggleCheck(_ selectedItem: Item) {
         if selectedItem.isChecked {
             // Uncheck the item if it is already checked
             if let index = items.firstIndex(where: { $0.id == selectedItem.id }) {
                 items[index].isChecked = false
+                selectedItem.type = "Unchecked"
             }
         } else {
             // Check the selected item
             if let index = items.firstIndex(where: { $0.id == selectedItem.id }) {
                 items[index].isChecked = true
+                selectedItem.type = "Checked"
             }
         }
     }
@@ -61,9 +63,9 @@ struct ListItemView: View {
         }
     }
 }
-//}
-//
-//#Preview {
-//    ListItemView(sortOrder: [SortDescriptor(\ListItem.name)])
-//        .modelContainer(for: ListItem.self)
-//}
+
+
+#Preview {
+    ListItemView(sortOrder: [SortDescriptor(\Item.title)])
+        .modelContainer(for: Item.self)
+}

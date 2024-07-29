@@ -29,7 +29,7 @@ struct AddView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
-                        let item = Item(title: title, isChecked: false)
+                        let item = Item(title: title, isChecked: false, type: type)
                         modelContext.insert(item)
                         dismiss()
                     }
@@ -48,4 +48,5 @@ struct AddView: View {
 
 #Preview {
     AddView()
+        .modelContainer(for: Item.self)
 }

@@ -13,10 +13,12 @@ class Item: Identifiable {
     let id: UUID
     var title: String
     var isChecked: Bool
+    var type: String
 
-    init(title: String, isChecked: Bool = false) {
+    init(title: String, isChecked: Bool = false, type: String) {
         self.id = UUID()
         self.title = title
         self.isChecked = isChecked
+        self.type = type
     }
 }

@@ -11,13 +11,14 @@ import SwiftData
 
 
 struct ContentView: View {
-        @Environment(\.modelContext) var modelContext
-        @Query private var items: [Item]
+    @Environment(\.modelContext) var modelContext
+    @Query private var items: [Item]
     @State private var showingAddItem = false
     @State private var sortOrder = [
         SortDescriptor(\Item.title),
     ]
     @State private var itemType = "All"
+    @State private var showingAlert = false
     
     
     var body: some View {
@@ -44,26 +45,32 @@ struct ContentView: View {
                         }
                     }
                     
-                    Menu("Sort", systemImage: "arrow.up.arrow.down") {
-                        Picker("Sort", selection: $sortOrder) {
-                            Text("Sort by Name A-Z")
-                                .tag([SortDescriptor(\Item.title)
-                                     ])
-                            Text("Sort by Name Z-A")
-                                .tag([SortDescriptor(\Item.title, order: .reverse)
-                                     ])
-                        }
-                    }
+//                    Menu("Sort", systemImage: "arrow.up.arrow.down") {
+//                        Picker("Sort", selection: $sortOrder) {
+//                            Text("Sort by Name A-Z")
+//                                .tag([SortDescriptor(\Item.title)
+//                                     ])
+//                            Text("Sort by Name Z-A")
+//                                .tag([SortDescriptor(\Item.title, order: .reverse)
+//                                     ])
+//                        }
+//                    }
                     
                     Button("Uncheck All Items", systemImage: "checkmark.circle.badge.xmark") {
                         for item in items {
                             item.isChecked = false
+                            item.type = "Unchecked"
                         }
                     }
                     
                     Button("Empty List", systemImage: "trash") {
-                        for item in items {
-                            modelContext.delete(item)
+                        showingAlert = true
+                    }
+                    .alert("Delete all items?", isPresented: $showingAlert) {
+                        Button("OK", role: .destructive) {
+                            for item in items {
+                                modelContext.delete(item)
+                            }
                         }
                     }
                 }

@@ -12,22 +12,53 @@ struct ListItemView: View {
     @Environment(\.modelContext) var modelContext
     @Query private var items: [Item]
     
+    @State private var showingAddItem = false
+    
     var body: some View {
-        List {
-            ForEach(items) { item in
-                HStack {
-                    Text(item.title)
-                    Spacer()
-                    Image(systemName: item.isChecked ? "checkmark.square" : "square")
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .foregroundColor(item.isChecked ? .blue : .gray)
-                        .onTapGesture {
-                            toggleCheck(item)
+        ZStack {
+            VStack {
+                List {
+                    ForEach(items) { item in
+                        HStack {
+                            Text(item.title)
+                            Spacer()
+                            Image(systemName: item.isChecked ? "checkmark.square" : "square")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(item.isChecked ? .blue : .gray)
+                                .onTapGesture {
+                                    toggleCheck(item)
+                                }
                         }
+                    }
+                    .onDelete(perform: removeItems)
                 }
+                
+                VStack {
+                    HStack {
+                        Spacer()
+                        Button {
+                            showingAddItem = true
+                        } label: {
+                            Image(systemName: "plus")
+                                .frame(width: 15, height: 15)
+                                .padding(10)
+
+                                .background {
+                                    Color.secondary
+                                        .cornerRadius(5.0)
+                                        .shadow(color: .gray, radius:40, x: 0.0, y: 0.0)
+                                }
+                        }
+                        .padding()
+                    }
+                    .padding()
+                }
+                .sheet(isPresented: $showingAddItem) {
+                    AddView()
+                }
+    
             }
-            .onDelete(perform: removeItems)
         }
     }
 

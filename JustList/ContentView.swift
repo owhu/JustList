@@ -19,6 +19,7 @@ struct ContentView: View {
     ]
     @State private var itemType = "All"
     @State private var showingAlert = false
+    @State private var listTitle = "Title"
     
     
     var body: some View {
@@ -26,9 +27,9 @@ struct ContentView: View {
             ListItemView(type: itemType, sortOrder: sortOrder)
                 .toolbar {
                     //                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add Item", systemImage: "plus") {
-                        showingAddItem = true
-                    }
+//                    Button("Add Item", systemImage: "plus") {
+//                        showingAddItem = true
+//                    }
                     //                }
                     
                     Menu("Filter", systemImage: "line.3.horizontal.decrease.circle") {
@@ -74,9 +75,12 @@ struct ContentView: View {
                         }
                     }
                 }
-                .sheet(isPresented: $showingAddItem) {
-                    AddView()
-                }
+                .navigationTitle($listTitle)
+                .navigationBarTitleDisplayMode(.inline)
+//                .sheet(isPresented: $showingAddItem) {
+//                    AddView()
+//                }
+                
         }
     }
 }
